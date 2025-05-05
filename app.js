@@ -36,6 +36,9 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Google OAuth app');
 });
 
+const formRoutes = require('./routes/formData');
+app.use('/form', formRoutes); // Or any base path you want
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

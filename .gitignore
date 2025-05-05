@@ -1,0 +1,46 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv environment files
+.env
+.env.*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# Build outputs
+dist/
+build/
+
+# GridFS temporary uploads (if any local staging is used)
+uploads/
+tmp/
+
+# Session files (if stored on disk - usually not with express-session in memory)
+sessions/
+
+# MongoDB dump files
+dump/
+
+# Misc
+*.tgz
+*.bak
+*.swp
