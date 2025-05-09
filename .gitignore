@@ -30,10 +30,6 @@ coverage/
 dist/
 build/
 
-# GridFS temporary uploads (if any local staging is used)
-uploads/
-tmp/
-
 # Session files (if stored on disk - usually not with express-session in memory)
 sessions/
 

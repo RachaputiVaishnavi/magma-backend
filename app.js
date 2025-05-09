@@ -2,42 +2,58 @@ const express = require('express');
 const passport = require('passport');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
-const connectDB = require('./db');
+const mongoose = require('mongoose');
+const cors = require('cors');
 const authRoutes = require('./routes/auth');
+const formRoutes = require('./routes/formData');
 
 dotenv.config();
 
-// Initialize the app
+// Connect to MongoDB with updated options
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error('MongoDB connection error:', err));
+
+// Create MongoDB connection events for better error handling
+mongoose.connection.on('error', err => {
+  console.error('MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+});
+
 const app = express();
 
-// MongoDB connection
-connectDB();
-
-// Body parser middleware
+// Middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session middleware
+// Session middleware with updated options
 app.use(expressSession({
-  secret: process.env.SESSION_SECRET, // Secret key for sessions
+  secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false, // Changed to false for better security
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    httpOnly: true, // Prevents client-side access to the cookie
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
 }));
 
-// Initialize Passport
+// Initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Setup routes
 app.use('/auth', authRoutes);
+app.use('/form', formRoutes);
 
 // Home route
 app.get('/', (req, res) => {
   res.send('Welcome to the Google OAuth app');
 });
-
-const formRoutes = require('./routes/formData');
-app.use('/form', formRoutes); // Or any base path you want
 
 // Start the server
 const PORT = process.env.PORT || 3000;

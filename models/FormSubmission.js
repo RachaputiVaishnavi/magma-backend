@@ -23,12 +23,8 @@ const FormSubmissionSchema = new mongoose.Schema({
   raisedFunding: Boolean,
   fundingCurrency: String,
   fundingAmount: Number,
-  supportingDocuments: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'uploads.files', // GridFS file reference
-  },
   heardFrom: String,
   additionalInfo: String,
 }, { timestamps: true });
 
-module.exports = mongoose.model('FormSubmission', FormSubmissionSchema);
+module.exports = mongoose.model('FormSubmission', FormSubmissionSchema); 
